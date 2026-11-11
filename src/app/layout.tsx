@@ -1,49 +1,25 @@
-import type { Metadata } from "next";
-
-import "./globals.css";
-import "@mantine/core/styles.css";
-
-import { createTheme, MantineProvider } from "@mantine/core";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
-import ApplicationShell from "./components/core/AppShell";
+import "./globals.css";
+
+const sans = localFont({ src: "./fonts/GeistVF.woff", variable: "--font-sans", weight: "100 900", display: "swap" });
+const mono = localFont({ src: "./fonts/GeistMonoVF.woff", variable: "--font-mono", weight: "100 900", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Anascence",
-  description: "My portfolio",
-  icons: {
-    icon: "/dev.ico",
-  },
+  title: "Nay Htet Kyaw (Anascence) — full-stack engineer",
+  description: "Nay Htet Kyaw builds internal products at Issa Compass. Go, TypeScript, Next.js, PostgreSQL and Docker.",
+  icons: { icon: "/dev.ico" },
 };
 
-const theme = createTheme({
-  colors: {
-    dark: [
-      "#A3A4A7",
-      "#8C8D90",
-      "#76777A",
-      "#45474B",
-      "#2A2C30",
-      "#212326",
-      "#1B1C1F",
-      "#131416",
-      "#0F0F10",
-      "#0A0A0B",
-    ],
-  },
-});
+export const viewport: Viewport = { themeColor: "#0b0b0b", colorScheme: "dark" };
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="dark">
-          <Analytics />
-          <ApplicationShell>{children}</ApplicationShell>
-        </MantineProvider>
+        {children}
+        <Analytics />
       </body>
     </html>
   );

@@ -1,201 +1,111 @@
-"use client";
+import Image from "next/image";
+import { MotionConfig } from "motion/react";
+import { CodeGround } from "./ground/CodeGround";
+import { Header } from "./ui/Header";
+import { Hero } from "./ui/Hero";
+import { Work } from "./ui/Work";
+import { Journey } from "./ui/Journey";
+import { Stack } from "./ui/Stack";
+import { Contact } from "./ui/Contact";
+import { Reveal } from "./ui/Reveal";
+import { Code } from "./ui/Code";
+import { person, shippingWith } from "./content";
 
-import { Suspense } from "react";
-
-import Projects from "./projects/page";
-import Skills from "./skills/page";
-import Blog from "./blog/page";
-
-// Elegant components
-import { ElegantHero } from "./components/ElegantHero";
-import { PersonalStory } from "./components/PersonalStory";
-import { JobExperience } from "./components/JobExperience";
-import { ModernNavigation } from "./components/ModernNavigation";
-import { AnimatedBackground } from "./components/AnimatedBackground";
-import { FloatingElements } from "./components/FloatingElements";
-
-const userData = {
-  name: "Anascence",
-  role: "👩🏽‍💻 Full Stack Engineer  [^__ ]",
-  location: "Bangkok, Thailand",
-  overview:
-    "Crafting digital experiences that blur the line between art and technology. I transform complex challenges into intuitive, pixel-perfect solutions that users love.",
-  skills: [
-    "React",
-    "TypeScript",
-    "Next.js",
-    "Node.js",
-    "Python",
-    "",
-    "Web Development",
-  ],
-  interests: [
-    "Playing Musical Instruments",
-    "Japanese Language and Culture",
-    "Gaming",
-    "Sleeping",
-    "Foods",
-    "Astrology (Space Science)",
-    "The Universe",
-  ],
-};
-
-const LoadingBars = () => {
+function Feature({ id, title, children, text, aside }: { id: string; title: string; children: React.ReactNode; text: React.ReactNode; aside?: React.ReactNode }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "transparent",
-        gap: "24px",
-      }}
-    >
-      {/* Elegant loading animation */}
-      <div
-        style={{
-          display: "flex",
-          gap: "8px",
-        }}
-      >
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            style={{
-              width: "12px",
-              height: "40px",
-              background: "linear-gradient(135deg, #ffffff, #d1d5db)",
-              borderRadius: "6px",
-              animation: `loadingBars 1.2s ease-in-out infinite ${i * 0.2}s`,
-            }}
-          />
-        ))}
+    <section className="feature" id={id} aria-labelledby={`${id}-title`}>
+      <div className="wrap">
+        <hr className="rule" />
+        <Reveal as="h2" className="feature__title"><span id={`${id}-title`}>{title}</span></Reveal>
       </div>
-
-      {/* Loading text */}
-      <div
-        style={{
-          color: "#ffffff",
-          fontSize: "14px",
-          fontWeight: 500,
-          letterSpacing: "0.5px",
-          animation: "pulse 2s ease-in-out infinite",
-          fontFamily:
-            'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
-        }}
-      >
-        Loading...
+      {children}
+      <div className="wrap feature__foot">
+        <Reveal as="p" className="feature__text">{text}</Reveal>
+        {aside && <Reveal delay={0.1}>{aside}</Reveal>}
       </div>
-
-      <style jsx>{`
-        @keyframes loadingBars {
-          0%,
-          40%,
-          100% {
-            transform: scaleY(0.4);
-            opacity: 0.5;
-          }
-          20% {
-            transform: scaleY(1);
-            opacity: 1;
-          }
-        }
-
-        @keyframes pulse {
-          0%,
-          100% {
-            opacity: 0.6;
-          }
-          50% {
-            opacity: 1;
-          }
-        }
-      `}</style>
-    </div>
+    </section>
   );
-};
+}
+
+const aboutMe = [
+  "const nay = {",
+  "  role: \"Full-stack engineer\",",
+  "  at: \"Issa Compass\",",
+  "  stack: [\"Go\", \"TypeScript\", \"Next.js\", \"PostgreSQL\"],",
+  "  editor: \"vim\",",
+  "  os: \"arch\",",
+  "  offline: [\"guitar\", \"日本語\", \"games\", \"the universe\"],",
+  "};",
+];
 
 export default function Home() {
-  const scrollToElement = (selector: string, offset: number = 0) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      const targetPosition =
-        element.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top: targetPosition, behavior: "smooth" });
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleScrollToAbout = () => {
-    scrollToElement("#about", 0);
-  };
-
-  const navigationItems = [
-    { id: "hero", label: "Home", href: "#hero" },
-    { id: "about", label: "About", href: "#about" },
-    { id: "experience", label: "Experience", href: "#experience" },
-    { id: "skills", label: "Skills", href: "#skills" },
-    { id: "projects", label: "Projects", href: "#projects" },
-    { id: "blog", label: "Blog", href: "#blog" },
-  ];
-
   return (
-    <Suspense fallback={<LoadingBars />}>
-      {/* Animated Background */}
-      <AnimatedBackground variant="particles" intensity="medium" />
+    <MotionConfig reducedMotion="user">
+      <CodeGround />
+      <Header />
+      <main>
+        <Hero />
 
-      <div
-        style={{
-          minHeight: "100vh",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Modern Navigation */}
-        <ModernNavigation items={navigationItems} />
+        <section className="intro" id="intro">
+          <div className="wrap">
+            <Reveal className="logos">
+              <p className="mono logos__label">Shipping with</p>
+              <ul className="logos__row">
+                {shippingWith.map((l) => (
+                  <li key={l}><Image src={`/logos/${l}`} alt={l.replace(/(-white)?\.png$/, "")} width={36} height={36} /></li>
+                ))}
+              </ul>
+            </Reveal>
+            <Reveal as="h2" className="intro__title">Small tools.<br />Serious uptime.</Reveal>
+            <Reveal as="p" className="intro__text" delay={0.1}>
+              Most of what I build never gets a landing page: dashboards, chatbots, services the whole company quietly
+              depends on. I care about making them fast, obvious and a little bit delightful.
+            </Reveal>
+          </div>
+        </section>
 
-        {/* Hero Section */}
-        <div id="hero" style={{ marginTop: "-1.5rem" }}>
-          <ElegantHero
-            name={userData.name}
-            role={userData.role}
-            onExplore={handleScrollToAbout}
-          />
+        <Feature
+          id="work"
+          title="Selected work"
+          text="Open-source projects from the Stamford Syntax Club and my own repos. Filter by stack, then open a card to read the code behind it."
+          aside={<a className="mono-link arrow-link" href="https://github.com/anascence" target="_blank" rel="noopener noreferrer">All repositories ›</a>}
+        >
+          <Work />
+        </Feature>
+
+        <Feature
+          id="journey"
+          title="Experience"
+          text="From class president to production on-call. Scroll or swipe through it."
+          aside={<a className="mono-link arrow-link" href={person.resume} target="_blank" rel="noopener noreferrer">Full résumé ›</a>}
+        >
+          <Journey />
+        </Feature>
+
+        <Feature
+          id="stack"
+          title="Things I reach for"
+          text="Drag them around. They always come back, like a good rollback."
+          aside={<div className="panel"><Code lines={aboutMe} /></div>}
+        >
+          <Stack />
+        </Feature>
+
+        <Feature
+          id="contact"
+          title="Let’s build something"
+          text="Internal tool, side project, or just a chat about Vim configs. My inbox is open."
+        >
+          <Contact />
+        </Feature>
+      </main>
+
+      <footer className="footer">
+        <div className="wrap footer__row">
+          <span className="mono">© 2026 {person.name}</span>
+          <span className="mono">The background is my own code</span>
         </div>
-
-        {/* About Section */}
-        <div id="about">
-          <PersonalStory data={userData} />
-        </div>
-
-        {/* Job Experience Section */}
-        <div id="experience">
-          <JobExperience />
-        </div>
-
-        {/* Skills Section */}
-        <div id="skills">
-          <Skills />
-        </div>
-
-        {/* Projects Section */}
-        <div id="projects">
-          <Projects />
-        </div>
-
-        {/* Blog Section */}
-        <div id="blog">
-          <Blog />
-        </div>
-
-        {/* Enhanced Floating Elements */}
-        <FloatingElements onScrollToTop={scrollToTop} />
-      </div>
-    </Suspense>
+      </footer>
+    </MotionConfig>
   );
 }
